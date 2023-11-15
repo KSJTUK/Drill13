@@ -124,6 +124,16 @@ class Zombie:
         else:
             return BehaviorTree.RUNNING
 
+    def flee_from_boy(self, r=0.5):
+        self.state = 'Walk'
+        delta_position_from_boy = play_mode.boy.x - self.x, play_mode.boy.y - self.y
+        tx, ty = self.x - delta_position_from_boy[0], self.y - delta_position_from_boy[1]
+        self.move_slightly_to(tx, ty)
+        if self.distance_less_than(tx, ty, self.x, self.y, r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
     def get_patrol_location(self):
         self.tx, self.ty = self.patrol_locations[self.loc_no]
         self.loc_no = (self.loc_no + 1) % len(self.patrol_locations)
@@ -148,15 +158,17 @@ class Zombie:
 
         a5 = Action('순찰 위치를 가져오기', self.get_patrol_location)
 
-        root = SEQ_patrol = Sequence('순찰', a5, a2)
+        # root = SEQ_patrol = Sequence('순찰', a5, a2)
 
         # 추적, 도망 또는 배회 행동 트리 구조 작성
 
-        # a6 = Action('소년의 반대 방향으로 이동')
+        a6 = Action('소년의 반대 방향으로 도망', self.flee_from_boy)
 
-        # SEQ_flee_boy = Sequence('도망', a6)
+        # 도망 테스트용
+        SEQ_flee = Sequence('도망', c1, a6)
+        root = SEL_flee_or_wander = Selector('도망 또는 배회', SEQ_flee, SEQ_wander)
 
-        # SEL_chase_or_flee = Selector('추적 또는 도망', SEQ_chase_boy, SEQ_flee_boy)
+        # SEL_chase_or_flee = Selector('추적 또는 도망', SEQ_chase_boy, a6)
 
         # SEQ_chase_or_flee_boy = Selector('소년이 근처에 있으면 추적 또는 도망', c1, SEL_chase_or_flee)
 
