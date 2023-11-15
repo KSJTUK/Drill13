@@ -170,10 +170,8 @@ class Zombie:
 
         SEL_chase_or_flee = Selector('추적 또는 도망', SEQ_chase_boy, a6)
 
-        root = SEQ_chase_or_flee_boy = Sequence('소년이 근처에 있으면 추적 또는 도망', c1, SEL_chase_or_flee)
+        SEQ_chase_or_flee_boy = Sequence('소년이 근처에 있으면 추적 또는 도망', c1, SEL_chase_or_flee)
 
-        # SEL_chase_or_flee_or_wander = Selector('추적, 도망 또는 배회', SEQ_chase_or_flee_boy, SEQ_wander)
-
-
+        root = SEL_chase_or_flee_or_wander = Selector('추적, 도망 또는 배회', SEQ_chase_or_flee_boy, SEQ_wander)
 
         self.bt = BehaviorTree(root)
