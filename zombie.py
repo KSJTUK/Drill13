@@ -151,11 +151,11 @@ class Zombie:
 
         SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
 
-        a3 = Action('Set random location', self.set_random_location)
+        a3 = Action('랜덤 위치 설정', self.set_random_location)
 
         c1 = Condition('소년이 근처에 있는가?', self.is_boy_nearby, 7)
 
-        SEQ_wander = Sequence('Wander', a3, a2)
+        SEQ_wander = Sequence('배회', a3, a2)
         a4 = Action('소년으로 이동', self.move_to_boy)
 
         # 추적, 도망 또는 배회 행동 트리 구조 작성
@@ -170,9 +170,9 @@ class Zombie:
 
         SEL_chase_or_flee = Selector('추적 또는 도망', SEQ_chase_boy, a6)
 
-        root = SEQ_chase_or_flee_boy = Selector('소년이 근처에 있으면 추적 또는 도망', c1, SEL_chase_or_flee)
+        root = SEQ_chase_or_flee_boy = Sequence('소년이 근처에 있으면 추적 또는 도망', c1, SEL_chase_or_flee)
 
-        # root = SEL_chase_or_flee_or_wander = Selector('추적, 도망 또는 배회', SEQ_chase_or_flee_boy)
+        # SEL_chase_or_flee_or_wander = Selector('추적, 도망 또는 배회', SEQ_chase_or_flee_boy, SEQ_wander)
 
 
 
