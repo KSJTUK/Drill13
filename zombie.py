@@ -95,6 +95,7 @@ class Zombie:
         self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
 
     def move_to(self, r=0.5):
+        self.state = 'Walk'
         self.move_slightly_to(self.tx, self.ty)
         if self.distance_less_than(self.tx, self.ty, self.x, self.y, r):
             return BehaviorTree.SUCCESS
@@ -102,7 +103,7 @@ class Zombie:
             return BehaviorTree.RUNNING
 
     def set_random_location(self):
-        pass
+        self.tx, self.ty = random.randint(100, 1200 - 100), random.randint(100, 1024 - 100)
 
     def is_boy_nearby(self, distance):
         pass
@@ -117,5 +118,10 @@ class Zombie:
         a1 = Action('Set target location', self.set_target_location, 500, 50) # 액션 노드 생성
         a2 = Action('Move to', self.move_to)
 
-        root1 = SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
-        self.bt = BehaviorTree(root1)
+        SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
+
+        a3 = Action('Set random location', self.set_random_location)
+
+        root = SEQ_wander = Sequence('Wander', a3, a2)
+
+        self.bt = BehaviorTree(root)
