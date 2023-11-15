@@ -45,6 +45,8 @@ class Zombie:
         self.state = 'Idle'
         self.ball_count = 0
 
+        self.tx, self.ty = 1000, 400
+
         self.build_behavior_tree()
 
 
@@ -63,6 +65,7 @@ class Zombie:
         else:
             Zombie.images[self.state][int(self.frame)].draw(self.x, self.y, 100, 100)
         self.font.draw(self.x - 10, self.y + 60, f'{self.ball_count}', (0, 0, 255))
+        Zombie.marker_image.draw(self.tx + 25, self.ty - 25)
         draw_rectangle(*self.get_bb())
 
     def handle_event(self, event):
