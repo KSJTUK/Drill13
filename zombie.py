@@ -150,4 +150,18 @@ class Zombie:
 
         root = SEQ_patrol = Sequence('순찰', a5, a2)
 
+        # 추적, 도망 또는 배회 행동 트리 구조 작성
+
+        # a6 = Action('소년의 반대 방향으로 이동')
+
+        # SEQ_flee_boy = Sequence('도망', a6)
+
+        # SEL_chase_or_flee = Selector('추적 또는 도망', SEQ_chase_boy, SEQ_flee_boy)
+
+        # SEQ_chase_or_flee_boy = Selector('소년이 근처에 있으면 추적 또는 도망', c1, SEL_chase_or_flee)
+
+        # root = SEL_chase_or_flee_or_wander = Selector('추적, 도망 또는 배회', SEQ_chase_or_flee_boy)
+
+
+
         self.bt = BehaviorTree(root)
