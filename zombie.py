@@ -133,7 +133,8 @@ class Zombie:
     def flee_from_boy(self, r=0.5):
         self.state = 'Walk'
         delta_position_from_boy = play_mode.boy.x - self.x, play_mode.boy.y - self.y
-        self.tx, self.ty = self.x - delta_position_from_boy[0], self.y - delta_position_from_boy[1]
+        self.tx, self.ty = clamp(0, self.x - delta_position_from_boy[0], 1280),\
+                                 clamp(0, self.y - delta_position_from_boy[1], 1024)
         self.move_slightly_to(self.tx, self.ty)
         if self.distance_less_than(self.tx, self.ty, self.x, self.y, r):
             return BehaviorTree.SUCCESS
@@ -147,7 +148,7 @@ class Zombie:
 
     def build_behavior_tree(self):
         a1 = Action('Set target location', self.set_target_location, 500, 50) # 액션 노드 생성
-        a2 = Action('Move to', self.move_to)
+        a2 = Action('지정 위치로 이동', self.move_to)
 
         SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
 
