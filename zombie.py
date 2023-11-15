@@ -7,7 +7,6 @@ import game_world
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import play_mode
 
-
 # zombie Run Speed
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 10.0  # Km / Hour
@@ -34,12 +33,11 @@ class Zombie:
             Zombie.font = load_font('ENCR10B.TTF', 40)
             Zombie.marker_image = load_image('hand_arrow.png')
 
-
     def __init__(self, x=None, y=None):
         self.x = x if x else random.randint(100, 1180)
         self.y = y if y else random.randint(100, 924)
         self.load_images()
-        self.dir = 0.0      # radian 값으로 방향을 표시
+        self.dir = 0.0  # radian 값으로 방향을 표시
         self.speed = 0.0
         self.frame = random.randint(0, 9)
         self.state = 'Idle'
@@ -54,16 +52,13 @@ class Zombie:
         ]
         self.loc_no = 0
 
-
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50
-
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
         # fill here
         self.bt.run()
-
 
     def draw(self):
         if math.cos(self.dir) < 0:
@@ -80,7 +75,6 @@ class Zombie:
     def handle_collision(self, group, other):
         if group == 'zombie:ball':
             self.ball_count += 1
-
 
     def set_target_location(self, x=None, y=None):
         if not x or not y:
@@ -133,8 +127,8 @@ class Zombie:
     def flee_from_boy(self, r=0.5):
         self.state = 'Walk'
         delta_position_from_boy = play_mode.boy.x - self.x, play_mode.boy.y - self.y
-        self.tx, self.ty = clamp(0, self.x - delta_position_from_boy[0], 1280),\
-                                 clamp(0, self.y - delta_position_from_boy[1], 1024)
+        self.tx, self.ty = clamp(0, self.x - delta_position_from_boy[0], 1280), \
+            clamp(0, self.y - delta_position_from_boy[1], 1024)
         self.move_slightly_to(self.tx, self.ty)
         if self.distance_less_than(self.tx, self.ty, self.x, self.y, r):
             return BehaviorTree.SUCCESS
@@ -147,7 +141,7 @@ class Zombie:
         return BehaviorTree.SUCCESS
 
     def build_behavior_tree(self):
-        a1 = Action('Set target location', self.set_target_location, 500, 50) # 액션 노드 생성
+        a1 = Action('Set target location', self.set_target_location, 500, 50)  # 액션 노드 생성
         a2 = Action('지정 위치로 이동', self.move_to)
 
         SEQ_move_to_target_location = Sequence('Move to target location', a1, a2)
